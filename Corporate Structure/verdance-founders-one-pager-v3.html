@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verdance Founders Baseline V3</title>
+  <meta name="description" content="Internal founders working one-pager for Verdance Trade Solutions: position, services, fees, payment structure, and go-to-market alignment." />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=zodiak@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+      --color-bg: #f7f4ef; --color-surface: #fbf8f2; --color-surface-2: #f3eee5; --color-surface-offset: #ebe3d6;
+      --color-border: #d6ccbc; --color-divider: #ddd4c6; --color-text: #221d17; --color-text-muted: #6e655a; --color-text-faint: #9d9385; --color-text-inverse: #f7f4ef;
+      --color-primary: #0f5c54; --color-primary-hover: #0a4a44; --color-gold: #9b6b20; --color-burgundy: #6c2f2f;
+      --shadow-sm: 0 1px 2px rgba(31, 24, 18, 0.06); --shadow-md: 0 10px 30px rgba(31, 24, 18, 0.08);
+      --radius-sm: .4rem; --radius-md: .75rem; --radius-lg: 1rem; --radius-xl: 1.5rem; --radius-full: 9999px;
+      --font-body: 'General Sans', Inter, sans-serif; --font-display: 'Zodiak', Georgia, serif; --content: 1180px;
+    }
+    [data-theme="dark"] {
+      --color-bg: #171412; --color-surface: #1d1a17; --color-surface-2: #26211d; --color-surface-offset: #302924;
+      --color-border: #473e36; --color-divider: #3b342d; --color-text: #ece4d8; --color-text-muted: #b5aa9d; --color-text-faint: #8c8378; --color-text-inverse: #171412;
+      --color-primary: #71a79e; --color-primary-hover: #8ab8b1; --color-gold: #cc9f56; --color-burgundy: #c78a8a;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.25); --shadow-md: 0 10px 30px rgba(0,0,0,.35);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:none;text-size-adjust:none}
+    body{font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;background:var(--color-bg);color:var(--color-text);min-height:100vh}
+    img,svg{display:block;max-width:100%;height:auto} a{color:inherit;text-decoration:none} button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+    .skip-link{position:absolute;left:-9999px;top:auto}.skip-link:focus{left:var(--space-4);top:var(--space-4);background:var(--color-surface);padding:var(--space-3) var(--space-4);z-index:100;border-radius:var(--radius-sm);border:1px solid var(--color-border)}
+    .container{width:min(calc(100% - 2rem),var(--content));margin-inline:auto}
+    .header{position:sticky;top:0;z-index:50;background:color-mix(in oklab,var(--color-bg) 86%, transparent);backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in oklab,var(--color-border) 65%, transparent)}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-4) 0}
+    .brand{display:flex;align-items:center;gap:var(--space-3)}
+    .logo{width:42px;height:42px;color:var(--color-primary)}
+    .brand-meta small{display:block;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.14em;color:var(--color-text-muted)}
+    .brand-meta strong{font-size:var(--text-sm);font-weight:600}
+    .header-actions{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+    .theme-toggle,.pill{min-height:44px;padding:0 var(--space-4);border:1px solid color-mix(in oklab,var(--color-border) 90%, transparent);border-radius:var(--radius-full);background:var(--color-surface)}
+    .pill{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--color-text-muted)}
+    main{padding-bottom:var(--space-20)}
+    .hero{padding:clamp(var(--space-12),12vw,var(--space-24)) 0 var(--space-12)}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:var(--space-8);align-items:end}
+    .eyebrow,.section-kicker{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.16em}
+    .eyebrow{color:var(--color-primary);margin-bottom:var(--space-4)}
+    .section-kicker{color:var(--color-gold)}
+    h1,h2{font-family:var(--font-display);line-height:1.04;font-weight:500}
+    h1{font-size:clamp(2.6rem,5vw,5.6rem);max-width:12ch;letter-spacing:-0.03em}
+    h2{font-size:var(--text-xl);letter-spacing:-0.02em}
+    h3{font-size:var(--text-lg);line-height:1.15;font-weight:600}
+    p{max-width:72ch}
+    .hero-copy p{margin-top:var(--space-5);color:var(--color-text-muted);font-size:var(--text-lg);max-width:58ch}
+    .hero-panel{background:linear-gradient(180deg,color-mix(in oklab,var(--color-surface) 88%, white),var(--color-surface-2));border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);box-shadow:var(--shadow-md)}
+    .hero-panel ul{list-style:none;display:grid;gap:var(--space-4)}
+    .hero-panel li{padding-top:var(--space-4);border-top:1px solid var(--color-divider)}
+    .hero-panel li:first-child{padding-top:0;border-top:0}
+    .hero-panel strong{display:block;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--color-text-muted);margin-bottom:var(--space-2)}
+    .section{padding:var(--space-10) 0}
+    .section-head{display:grid;grid-template-columns:.82fr 1.18fr;gap:var(--space-8);margin-bottom:var(--space-6)}
+    .cards{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--space-4)}
+    .card,.timeline-item,.note,.board{background:var(--color-surface);border:1px solid color-mix(in oklab,var(--color-border) 90%, transparent);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--shadow-sm)}
+    .card{grid-column:span 4}
+    .card .num,.label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.16em;color:var(--color-text-faint);margin-bottom:var(--space-3)}
+    .card p,.timeline-item p,.note p,.board p,.fee-card p,.owner p{color:var(--color-text-muted)}
+    .span-6{grid-column:span 6}.span-8{grid-column:span 8}.span-12{grid-column:1/-1}
+    .timeline{display:grid;gap:var(--space-4)}
+    .timeline-item{display:grid;grid-template-columns:160px 1fr;gap:var(--space-4)}
+    .timeline-item strong{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--color-primary)}
+    .practice-grid,.owners,.fees{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4)}
+    .matrix{overflow:auto;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-surface)}
+    table{width:100%;border-collapse:collapse} th,td{text-align:left;vertical-align:top;padding:var(--space-4);border-bottom:1px solid var(--color-divider)}
+    th{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--color-text-muted);background:color-mix(in oklab,var(--color-surface-2) 72%, transparent)}
+    .note{border-radius:var(--radius-xl);background:linear-gradient(135deg,color-mix(in oklab,var(--color-primary) 7%, var(--color-surface)),color-mix(in oklab,var(--color-gold) 8%, var(--color-surface)))}
+    .board{display:grid;gap:var(--space-4);background:linear-gradient(180deg,color-mix(in oklab,var(--color-surface) 78%, var(--color-surface-offset)),var(--color-surface))}
+    .board ul,.owner ul,.fee-card ul{padding-left:1.1rem;display:grid;gap:.45rem}
+    .owner,.fee-card{padding:var(--space-5);background:color-mix(in oklab,var(--color-surface) 82%, var(--color-surface-offset));border:1px solid var(--color-border);border-radius:var(--radius-lg)}
+    .footer{padding-top:var(--space-10);border-top:1px solid var(--color-divider);display:flex;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap;color:var(--color-text-muted)}
+    .anchor-nav{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .anchor-nav a{padding:.55rem .9rem;border-radius:var(--radius-full);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;background:var(--color-surface);border:1px solid var(--color-border)}
+    .accent{color:var(--color-burgundy)}
+    @media (max-width: 920px){
+      .hero-grid,.section-head,.timeline-item,.practice-grid,.owners,.fees{grid-template-columns:1fr}
+      .card,.span-6,.span-8{grid-column:1/-1}
+      .header-inner{align-items:flex-start;flex-direction:column}
+    }
+    @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 64 64" aria-label="Verdance emblem" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11 40c8-3 12-11 13-20 9 2 16 7 21 15 3 5 5 10 8 13-7 1-13-1-18-4-6 6-14 9-24 8 5-3 9-7 11-12-3 1-7 1-11 0Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M26 24c4 2 7 5 10 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="39" cy="26" r="2.2" fill="currentColor"/>
+        </svg>
+        <div class="brand-meta">
+          <small>Internal founders whiteboard · v3</small>
+          <strong>Verdance Trade Solutions — Baseline, Services, and Revenue Architecture</strong>
+        </div>
+      </div>
+      <div class="header-actions">
+        <nav class="anchor-nav" aria-label="Section navigation">
+          <a href="#baseline">Baseline</a>
+          <a href="#services">Services</a>
+          <a href="#fees">Fees</a>
+          <a href="#owners">Founders</a>
+          <a href="#meeting">Meeting</a>
+        </nav>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"><span aria-hidden="true">◐</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">June 2026 alignment snapshot · working build v3</div>
+          <h1>Verdance needs a usable <span class="accent">go-to-market foundation</span>, not just better language.</h1>
+          <p>This version shifts the one-pager from positioning only into a working founders board. It keeps the pilot-to-true-lane narrative and luxury heritage strength, but adds the next practical layer: service definition, fee logic, payment structure, founder contribution, and the decisions required to start generating revenue.</p>
+        </div>
+        <aside class="hero-panel" aria-label="Meeting frame">
+          <ul>
+            <li><strong>Company frame</strong><span>Founder-led operator studio and service provider firm with embedded procurement facilitation.</span></li>
+            <li><strong>Public story</strong><span>2025 was the pilot and proving ground. 2026 is the clearer launch of the true lane.</span></li>
+            <li><strong>Near-term reality</strong><span>Service lines produce earlier cashflow while procurement lanes mature more slowly.</span></li>
+            <li><strong>Whiteboard objective</strong><span>Leave with defined services, owner assignments, fee logic, and a first revenue-ready offer stack.</span></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="baseline">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Foundational baseline</div>
+            <h2>What Verdance is now</h2>
+          </div>
+          <p>Verdance should read first as a systems, trade infrastructure, and implementation firm built from operator experience. Procurement remains important, but it now sits inside a broader architecture that includes brand positioning, validation work, commercialization support, corridor design, and long-term relationship infrastructure.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="num">01</div>
+            <h3>Core identity</h3>
+            <p>Founder-led operator studio and service provider firm rather than a broker, gatekeeper, or traditional advisory shop.</p>
+          </article>
+          <article class="card">
+            <div class="num">02</div>
+            <h3>Primary narrative</h3>
+            <p>Pilot year to true lane: the original launch tested the old system and proved real traction, while the current model reflects the sharper business you actually want to build.</p>
+          </article>
+          <article class="card">
+            <div class="num">03</div>
+            <h3>Defining asset</h3>
+            <p>Luxury heritage literacy stays intact and becomes one of the firm’s most differentiated service areas, especially in branding and identity work.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Narrative spine</div>
+            <h2>From middleman to bridge builder</h2>
+          </div>
+          <p>Verdance is stepping away from the toll-booth role. The new logic is to design, build, and maintain the bridge between buyer and producer, getting paid for real work, real systems, and real lane health instead of hiding value inside mystery margin.</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <strong>Old logic</strong>
+            <div>
+              <h3>Gatekeeper economics</h3>
+              <p>Intermediary posture, spread dependence, and a role that still lived inside the structure Verdance wanted to critique.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <strong>Transition insight</strong>
+            <div>
+              <h3>Pilot proved both traction and limits</h3>
+              <p>The launch year created proof, meetings, validation work, and relationship momentum, but also clarified what role the founders do not want to occupy long term.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <strong>New logic</strong>
+            <div>
+              <h3>Design the bridge, hold the lane</h3>
+              <p>Verdance enters as service provider, builds as operator, and can retain facilitation or lane economics where it has actually created the system and relationship infrastructure.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Service architecture</div>
+            <h2>What we can realistically sell first</h2>
+          </div>
+          <p>The point of this section is not to freeze the full future catalog, but to define the first revenue-ready offers. These should create near-term cashflow, reflect the actual strengths of David, Andrew, and Ryan, and naturally ladder into longer-term corridor or procurement relationships when the fit is real.</p>
+        </div>
+        <div class="cards">
+          <article class="card span-6">
+            <div class="num">Offer 1</div>
+            <h3>Heritage & Identity Diagnostic</h3>
+            <p>Brand positioning, heritage mapping, narrative architecture, value clarity, and commercialization recommendations for founder-led or premium product businesses.</p>
+          </article>
+          <article class="card span-6">
+            <div class="num">Offer 2</div>
+            <h3>Operating System & Commercial Infrastructure Build</h3>
+            <p>Internal process mapping, operating framework cleanup, decision architecture, workflow design, and support systems that make a company more sellable and more executable.</p>
+          </article>
+          <article class="card span-6">
+            <div class="num">Offer 3</div>
+            <h3>Validation, Compliance, and Trade Readiness Support</h3>
+            <p>Structured readiness work for businesses dealing with regulated goods, sourcing complexity, validation needs, or corridor development before real lane movement begins.</p>
+          </article>
+          <article class="card span-6">
+            <div class="num">Offer 4</div>
+            <h3>Procurement Lane Design & Facilitation</h3>
+            <p>Selective lane setup, buyer-producer connection architecture, transaction support, and long-cycle corridor work where Verdance can justify durable economics.</p>
+          </article>
+        </div>
+        <div class="note" style="margin-top: var(--space-6);">
+          <h3>Practice area to preserve</h3>
+          <p><strong>Heritage & Luxury Brands</strong> should remain a named specialty. It protects the luxury heritage identity already built, gives Andrew a sharper marketing story, and keeps Verdance from flattening itself into generic services language.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fees">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Commercial model</div>
+            <h2>Fee and payment structure to test</h2>
+          </div>
+          <p>The current internal direction is a layered fee model. Instead of earning through buy-sell spread, Verdance gets paid through upfront operational lift, clearly scoped service fees, and recurring economics tied to healthy lanes that continue transacting over time.</p>
+        </div>
+        <div class="fees">
+          <article class="fee-card">
+            <div class="label">Layer 1</div>
+            <h3>Variable operations fee</h3>
+            <p>An upfront deposit or operations fee sized to the actual lift of a project, especially where travel, heavy research, sourcing work, or on-the-ground coordination is involved.</p>
+            <ul>
+              <li>Best for lane setup, readiness projects, and high-lift builds.</li>
+              <li>Protects cashflow before Verdance carries real execution burden.</li>
+            </ul>
+          </article>
+          <article class="fee-card">
+            <div class="label">Layer 2</div>
+            <h3>Broken-out service fees</h3>
+            <p>Clearly priced fees for standalone service work such as diagnostics, positioning, systems design, branding, validation support, or implementation packages.</p>
+            <ul>
+              <li>Best for near-term revenue and faster proof.</li>
+              <li>Keeps non-procurement work from being buried inside trade economics.</li>
+            </ul>
+          </article>
+          <article class="fee-card">
+            <div class="label">Layer 3</div>
+            <h3>Lane royalty or facilitation tail</h3>
+            <p>A recurring 1–2% royalty or transaction-based facilitation fee on healthy procurement lanes Verdance helps establish and maintain.</p>
+            <ul>
+              <li>Creates long-term revenue without forcing middleman margin logic.</li>
+              <li>Aligns Verdance with lane durability, volume health, and trust quality.</li>
+            </ul>
+          </article>
+          <article class="fee-card">
+            <div class="label">Default payment logic</div>
+            <h3>How money should move</h3>
+            <p>For services: deposit, milestone, and completion payments. For lane work: upfront operations coverage plus any longer-tail fee structure layered in contractually.</p>
+            <ul>
+              <li>Use budget qualification early so Andrew is not chasing vague “partner” conversations.</li>
+              <li>Keep fee logic visible and plain, not hidden inside abstract wording.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="owners">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Founder lanes</div>
+            <h2>What each founder should contribute</h2>
+          </div>
+          <p>This baseline should not leave the room as David-only architecture. Andrew and Ryan need to shape the offer set, market story, and execution reality so the company can sell honestly and deliver repeatably.</p>
+        </div>
+        <div class="owners">
+          <article class="owner">
+            <div class="label">David</div>
+            <h3>Business model and operating architecture</h3>
+            <p>Bring the positioning framework, fee model logic, lane design thinking, and the internal narrative spine into the room.</p>
+            <ul>
+              <li>Own the baseline sentence.</li>
+              <li>Propose default commercial structure.</li>
+              <li>Map which services ladder into procurement lanes.</li>
+            </ul>
+          </article>
+          <article class="owner">
+            <div class="label">Andrew</div>
+            <h3>Go-to-market, brand, and close strategy</h3>
+            <p>Pressure-test how the offers should be named, pitched, filtered, and sold in a way that sounds premium, clear, and high-intent.</p>
+            <ul>
+              <li>Own service naming and outward language.</li>
+              <li>Set budget-floor and qualification cues.</li>
+              <li>Sharpen the Heritage & Luxury Brands story.</li>
+            </ul>
+          </article>
+          <article class="owner">
+            <div class="label">Ryan</div>
+            <h3>Execution design and technical delivery reality</h3>
+            <p>Make sure the offer set is operationally buildable and supported by real systems, technical workflows, and repeatable implementation paths.</p>
+            <ul>
+              <li>Define buildable deliverables.</li>
+              <li>Identify which services can be standardized.</li>
+              <li>Pressure-test delivery burden and tooling needs.</li>
+            </ul>
+          </article>
+          <article class="owner">
+            <div class="label">Shared output</div>
+            <h3>What the founders should leave with</h3>
+            <p>A first service menu, a default payment framework, a common language set, and a practical next step for activating pipelines and revenue conversations.</p>
+            <ul>
+              <li>2–4 defined offers.</li>
+              <li>One agreed fee architecture.</li>
+              <li>Clear owner per offer.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Decision table</div>
+            <h2>Language to keep, reframe, or retire</h2>
+          </div>
+          <p>Use this in the room to stop drift. The goal is not perfect copy yet, but a vocabulary set everyone can consistently carry into decks, outreach, and future site copy.</p>
+        </div>
+        <div class="matrix" role="region" aria-label="Baseline language table">
+          <table>
+            <thead>
+              <tr>
+                <th>Topic</th>
+                <th>Keep</th>
+                <th>Reframe</th>
+                <th>Retire</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Verdance identity</td>
+                <td>Operator studio, service provider, implementation firm</td>
+                <td>Embedded procurement facilitation</td>
+                <td>Consultants, broker first language</td>
+              </tr>
+              <tr>
+                <td>Launch history</td>
+                <td>Pilot year and proving ground</td>
+                <td>Formal 2026 true-lane launch</td>
+                <td>Young firm making a major pivot</td>
+              </tr>
+              <tr>
+                <td>Economic logic</td>
+                <td>Operations fee, service fees, lane royalty</td>
+                <td>Long-term facilitation economics</td>
+                <td>Mystery spread or gatekeeper margin</td>
+              </tr>
+              <tr>
+                <td>Brand identity</td>
+                <td>Luxury heritage, provenance, old-world taste level</td>
+                <td>Flagship practice area and premium vertical</td>
+                <td>Overly romantic or cliché cultural framing</td>
+              </tr>
+              <tr>
+                <td>Geographic story</td>
+                <td>Mexico corridor as flagship strength</td>
+                <td>Portable trade and operating infrastructure model</td>
+                <td>Mexico as the only possible lane</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="meeting">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Meeting board</div>
+            <h2>Questions the whiteboard session must answer</h2>
+          </div>
+          <p>This version of the page should function as a founders working board. The meeting is successful only if it produces commercial clarity, not just conceptual agreement.</p>
+        </div>
+        <div class="board">
+          <div>
+            <div class="label">Resolve in order</div>
+            <ul>
+              <li>What is the one-sentence company description all three founders will repeat?</li>
+              <li>Which first two or three services can Verdance sell immediately with real deliverables?</li>
+              <li>Which of those are diagnostics, builds, retainers, or lane-entry offers?</li>
+              <li>What is the default payment structure for each offer: deposit, milestone, completion, monthly, or royalty tail?</li>
+              <li>What budget floor should Andrew use to qualify serious leads early?</li>
+              <li>Which proof points from the pilot year become public case studies and which remain internal?</li>
+            </ul>
+          </div>
+          <div>
+            <div class="label">Working sentence for the board</div>
+            <p>Verdance Trade Solutions is a founder-led operator studio and service provider firm that designs brand, trade, and operating infrastructure for high-trust commercial relationships, with embedded procurement facilitation and a flagship specialty in luxury heritage brands and complex sourcing lanes.</p>
+          </div>
+        </div>
+        <footer class="footer">
+          <p>Prepared for founders alignment meeting · Internal use only · V3 working baseline</p>
+          <p>Purpose: define services, fees, payment structure, and go-to-market language so pipeline activity can start turning into revenue.</p>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const btn = document.querySelector('[data-theme-toggle]');
+      const root = document.documentElement;
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', theme);
+      const paint = () => {
+        btn.innerHTML = theme === 'dark' ? '<span aria-hidden="true">☀︎</span>' : '<span aria-hidden="true">◐</span>';
+        btn.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+      };
+      paint();
+      btn.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; root.setAttribute('data-theme', theme); paint(); });
+    })();
+  </script>
+</body>
+</html>

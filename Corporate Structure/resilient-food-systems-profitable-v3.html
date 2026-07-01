@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="slides-format" content="viewport" />
+  <title>Niche to Necessary: Resilient Food Systems That Pay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-bg: #0d1b0e;
+      --color-bg-deep: #081109;
+      --color-surface: #17261a;
+      --color-text: #eef4e9;
+      --color-text-secondary: #d2ddcc;
+      --color-text-muted: #8ea18e;
+      --color-accent-1: #38c172;
+      --color-accent-2: #b6d49c;
+      --color-accent-3: #f0c36b;
+      --color-glass-bg: rgba(255,255,255,0.06);
+      --color-glass-border: rgba(255,255,255,0.10);
+      --color-vignette: rgba(0,0,0,0.42);
+      --font-display: 'Instrument Serif', serif;
+      --font-body: 'Inter', sans-serif;
+    }
+  </style>
+  <style>
+    :root { --color-bg: #0d1b0e; --color-text: #eef4e9; --glow-color-rgb: 56,193,114; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { background: var(--color-bg); margin: 0; }
+    body { font-family: var(--font-body); color: var(--color-text); overflow: hidden; height: 100vh; width: 100vw; }
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide { position: absolute; inset: 0; background: var(--color-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transform: scale(0.95); transition: opacity 0.7s ease, transform 0.7s ease; pointer-events: none; overflow: hidden; }
+    .slide.active { opacity: 1; transform: scale(1); pointer-events: all; }
+    .slide > .content { position: relative; z-index: 2; width: 100%; max-width: 1120px; padding: clamp(1.5rem, 4vw, 4rem); }
+    .nav-controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; z-index: 100; background: rgba(12,20,13,0.65); backdrop-filter: blur(12px); padding: 10px 24px; border-radius: 999px; border: 1px solid var(--color-glass-border); }
+    .nav-btn { width: 40px; height: 40px; border: none; background: var(--color-glass-bg); color: var(--color-accent-1); border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .slide-dots { display: flex; gap: 8px; }
+    .slide-dots .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; transition: background .3s, transform .3s; }
+    .slide-dots .dot.active { background: var(--color-accent-1); transform: scale(1.25); }
+    .slide-counter { font-size: .8rem; color: var(--color-text-muted); min-width: 44px; text-align: center; }
+    .reveal { opacity: 0; transform: translateY(20px); }
+    .gradient-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(90px); animation: float-slow 14s ease-in-out infinite; }
+    .blob:nth-child(2) { animation: float-drift 16s ease-in-out infinite; }
+    .blob:nth-child(3) { animation: float-slow 20s ease-in-out infinite reverse; }
+    .slide::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E"); background-repeat: repeat; background-size: 256px 256px; opacity: .05; mix-blend-mode: overlay; }
+    .slide::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at center, transparent 48%, var(--color-vignette) 100%); }
+    .text-glow { text-shadow: 0 0 22px rgba(var(--glow-color-rgb), .38); }
+    .stat-glow { text-shadow: 0 0 34px rgba(var(--glow-color-rgb), .55); }
+    .glass-card { background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; }
+    .kicker { letter-spacing: .28em; text-transform: uppercase; font-size: .8rem; color: var(--color-text-muted); }
+    .line { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent); }
+    .bar-track { height: 18px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--color-accent-1), var(--color-accent-2)); width: 0%; }
+    .role-card { min-height: 230px; }
+    @keyframes float-slow { 0%{transform:translate(0,0) scale(1)} 25%{transform:translate(40px,-35px) scale(1.08)} 50%{transform:translate(-30px,30px) scale(.92)} 75%{transform:translate(45px,10px) scale(1.06)} 100%{transform:translate(0,0) scale(1)} }
+    @keyframes float-drift { 0%{transform:translate(0,0) scale(1) rotate(0deg)} 33%{transform:translate(-55px,-50px) scale(1.12) rotate(3deg)} 66%{transform:translate(35px,25px) scale(.9) rotate(-2deg)} 100%{transform:translate(0,0) scale(1) rotate(0deg)} }
+    @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-14px);} }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: .2s !important; } }
+  </style>
+</head>
+<body>
+<div class="mouse-spotlight" style="position:fixed;inset:0;z-index:99;pointer-events:none;"></div>
+<div class="deck">
+  <div class="slide slide-1 active" data-slide="1">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:520px;height:520px;top:-110px;right:-90px;background:var(--color-accent-1);opacity:.16"></div>
+      <div class="blob" style="width:320px;height:320px;bottom:-80px;left:-50px;background:var(--color-accent-2);opacity:.13"></div>
+      <div class="blob" style="width:220px;height:220px;top:42%;left:14%;background:var(--color-accent-3);opacity:.1"></div>
+    </div>
+    <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-[118px] mb-4 animate-[float_3s_ease-in-out_infinite]">🌾</div>
+      <div class="kicker reveal mb-5">Food · Capital · Resilience · AI</div>
+      <h1 class="font-display text-[clamp(2.8rem,6.5vw,5.6rem)] font-normal bg-linear-to-br from-accent-1 via-accent-2 to-accent-1 bg-clip-text text-transparent tracking-tight mb-5 reveal">Niche to Necessary: Resilient Food Systems That Pay</h1>
+      <p class="text-[clamp(1rem,1.7vw,1.35rem)] max-w-[880px] mx-auto text-text-secondary reveal">Regen agriculture, future foods, and intelligent systems are all fighting the same economic battle: risk, margin, cashflow, and scalability.</p>
+    </div>
+  </div>
+
+  <div class="slide slide-2" data-slide="2">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:360px;height:360px;top:-60px;right:-70px;background:var(--color-accent-1);opacity:.08"></div>
+      <div class="blob" style="width:260px;height:260px;bottom:-60px;left:-40px;background:var(--color-accent-2);opacity:.07"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-4">Core thesis</div>
+      <h2 class="font-display text-[clamp(2rem,4.5vw,3.4rem)] mb-6 reveal">If it does not clear economically, it stays niche.</h2>
+      <div class="glass-card p-14 reveal flex flex-col items-center justify-center text-center" style="min-height:160px">
+        <p class="font-display text-[clamp(1.6rem,2.8vw,2.6rem)] leading-[1.35] text-text" style="font-style:italic">“Show me the incentive and I’ll show you the outcome.”</p>
+        <p class="mt-6 text-sm tracking-[0.22em] uppercase text-text-muted">— Charlie Munger</p>
+      </div>
+      <div class="grid grid-cols-3 gap-5 mt-8">
+        <div class="glass-card p-6 reveal"><div class="text-accent-1 text-sm uppercase tracking-[0.18em] mb-3">Camp 1</div><div class="text-xl font-semibold mb-2">Regen + supply chains</div><p class="text-text-secondary">Land-based operators working in actual production, sourcing, and logistics.</p></div>
+        <div class="glass-card p-6 reveal"><div class="text-accent-2 text-sm uppercase tracking-[0.18em] mb-3">Camp 2</div><div class="text-xl font-semibold mb-2">Alt-food + future food</div><p class="text-text-secondary">Builders creating new proteins, ingredients, and demand-side categories.</p></div>
+        <div class="glass-card p-6 reveal"><div class="text-accent-3 text-sm uppercase tracking-[0.18em] mb-3">Camp 3</div><div class="text-xl font-semibold mb-2">Tech + AI infrastructure</div><p class="text-text-secondary">Teams making resilience visible, verifiable, efficient, and investable.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-3" data-slide="3">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:440px;height:440px;top:-110px;left:-90px;background:var(--color-accent-3);opacity:.08"></div>
+      <div class="blob" style="width:300px;height:300px;bottom:-70px;right:-50px;background:var(--color-accent-1);opacity:.08"></div>
+    </div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content">
+      <div class="kicker reveal mb-3">Shared constraint</div>
+      <h2 class="font-display text-[clamp(2rem,4.3vw,3.2rem)] mb-8 reveal">Different products. Same math.</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="glass-card p-8 reveal">
+          <div class="text-4xl stat-glow text-accent-1 mb-4">1</div>
+          <h3 class="text-2xl font-semibold mb-3">Risk</h3>
+          <p class="text-text-secondary">Supply shocks, climate exposure, manufacturing uncertainty, buyer behavior, and operational fragility.</p>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-4xl stat-glow text-accent-2 mb-4">2</div>
+          <h3 class="text-2xl font-semibold mb-3">Margin</h3>
+          <p class="text-text-secondary">The economics often break where costs, complexity, and incentives stop lining up cleanly.</p>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-4xl stat-glow text-accent-3 mb-4">3</div>
+          <h3 class="text-2xl font-semibold mb-3">Time to cashflow</h3>
+          <p class="text-text-secondary">Soil transitions take time, bioprocessing takes scale, and software still has to get paid for.</p>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-4xl stat-glow text-accent-1 mb-4">4</div>
+          <h3 class="text-2xl font-semibold mb-3">Scalability in mess</h3>
+          <p class="text-text-secondary">Food systems are local, fragmented, human, regulated, and deeply inconvenient for clean spreadsheets.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-4" data-slide="4">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:350px;height:350px;top:-80px;right:-60px;background:var(--color-accent-2);opacity:.08"></div>
+      <div class="blob" style="width:260px;height:260px;bottom:-50px;left:-50px;background:var(--color-accent-1);opacity:.07"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Archetypes</div>
+      <h2 class="font-display text-[clamp(2rem,4vw,3rem)] mb-8 reveal">Three lanes, three versions of fragility</h2>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="glass-card p-7 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-accent-1 mb-3">Regen / heritage</div>
+          <h3 class="text-2xl font-semibold mb-3">Better ecological outcomes</h3>
+          <ul class="space-y-3 text-text-secondary text-[1.03rem]">
+            <li>Fragile producer economics</li>
+            <li>Higher coordination burden</li>
+            <li>Incentives often misaligned</li>
+          </ul>
+        </div>
+        <div class="glass-card p-7 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-accent-2 mb-3">Alt-food / future food</div>
+          <h3 class="text-2xl font-semibold mb-3">Great story and strong science</h3>
+          <ul class="space-y-3 text-text-secondary text-[1.03rem]">
+            <li>High capex</li>
+            <li>Uncertain adoption curves</li>
+            <li>Tricky unit economics</li>
+          </ul>
+        </div>
+        <div class="glass-card p-7 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-accent-3 mb-3">Tech / AI</div>
+          <h3 class="text-2xl font-semibold mb-3">Strong promise</h3>
+          <ul class="space-y-3 text-text-secondary text-[1.03rem]">
+            <li>Hard to get paid consistently</li>
+            <li>Data fragmentation</li>
+            <li>Integration friction</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-5" data-slide="5">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:500px;height:500px;top:-130px;right:-80px;background:var(--color-accent-1);opacity:.12"></div>
+      <div class="blob" style="width:240px;height:240px;bottom:0;left:8%;background:var(--color-accent-3);opacity:.08"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Profit lever 1</div>
+      <h2 class="font-display text-[clamp(2rem,4.2vw,3.1rem)] mb-8 reveal">Reduced volatility and risk</h2>
+      <div class="grid grid-cols-[1.2fr_.8fr] gap-8 items-center">
+        <div class="space-y-5">
+          <div class="glass-card p-6 reveal"><strong class="text-accent-1">Regen / supply chains:</strong> diversified sourcing, healthier soils, less dependence on one brittle node.</div>
+          <div class="glass-card p-6 reveal"><strong class="text-accent-2">Alt-food:</strong> partial decoupling of protein supply from land, weather, and water constraints.</div>
+          <div class="glass-card p-6 reveal"><strong class="text-accent-3">AI / tech:</strong> forecasting, early warning, traceability, and transparency that can actually travel into contracts.</div>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-text-muted mb-5">Capital framing</div>
+          <div class="text-[2.7rem] font-extrabold text-accent-1 stat-glow mb-2">Risk ↓</div>
+          <div class="line my-5"></div>
+          <p class="text-lg leading-[1.55] text-text-secondary">If you reduce volatility in supply, you reduce risk. If you can measure that reduction, you can price it. That is where capital can get paid.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-6" data-slide="6">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:360px;height:360px;top:-90px;left:-60px;background:var(--color-accent-2);opacity:.08"></div>
+      <div class="blob" style="width:260px;height:260px;bottom:-40px;right:-30px;background:var(--color-accent-1);opacity:.07"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Profit lever 2</div>
+      <h2 class="font-display text-[clamp(2rem,4.1vw,3rem)] mb-8 reveal">New revenue and premium</h2>
+      <div class="grid grid-cols-3 gap-5 mb-7">
+        <div class="glass-card p-6 reveal"><h3 class="text-xl font-semibold mb-3 text-accent-1">Regen / heritage</h3><p class="text-text-secondary">Operationally regenerative systems that improve soil, sourcing resilience, and input stability while still earning customer trust and premium pricing.</p></div>
+        <div class="glass-card p-6 reveal"><h3 class="text-xl font-semibold mb-3 text-accent-2">Alt-food</h3><p class="text-text-secondary">New categories, functional foods, and climate-branded demand that expand the market.</p></div>
+        <div class="glass-card p-6 reveal"><h3 class="text-xl font-semibold mb-3 text-accent-3">AI / tech</h3><p class="text-text-secondary">Data products, assurance tools, compliance layers, and procurement intelligence buyers will pay for.</p></div>
+      </div>
+      <div class="glass-card p-8 reveal">
+        <div class="grid grid-cols-3 gap-5 mb-5">
+          <div class="text-center"><div class="text-[1.9rem] font-extrabold text-accent-1 stat-glow">89%</div><p class="text-text-muted text-xs mt-1 uppercase tracking-wider">buyers reward regenerative value<br/><span class="normal-case not-italic text-[0.7rem]">Regenified 2024</span></p></div>
+          <div class="text-center"><div class="text-[1.9rem] font-extrabold text-accent-2 stat-glow">$881M</div><p class="text-text-muted text-xs mt-1 uppercase tracking-wider">alt-protein investment 2025<br/><span class="normal-case not-italic text-[0.7rem]">GFI 2026</span></p></div>
+          <div class="text-center"><div class="text-[1.9rem] font-extrabold text-accent-3 stat-glow">$21.5B</div><p class="text-text-muted text-xs mt-1 uppercase tracking-wider">regen ag market by 2035<br/><span class="normal-case not-italic text-[0.7rem]">FMI 2025</span></p></div>
+        </div>
+        <p class="text-base leading-[1.55] text-text-secondary">Resilience can create new revenue streams if we treat provenance, reduced deforestation, and lower risk as things we can <span class="text-accent-1 font-semibold">sell</span>, not just things we can report.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-7" data-slide="7">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:420px;height:420px;top:-120px;right:-90px;background:var(--color-accent-3);opacity:.09"></div>
+      <div class="blob" style="width:280px;height:280px;bottom:-70px;left:-50px;background:var(--color-accent-1);opacity:.08"></div>
+    </div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content">
+      <div class="kicker reveal mb-3">Profit lever 3</div>
+      <h2 class="font-display text-[clamp(2rem,4.1vw,3rem)] mb-7 reveal">Cost avoidance and downside protection</h2>
+      <div class="grid grid-cols-[1fr_1fr] gap-7 items-start">
+        <div class="space-y-4">
+          <div class="glass-card p-6 reveal">
+            <div class="text-sm uppercase tracking-[0.15em] text-text-muted mb-3">McKinsey Global Institute</div>
+            <div class="text-[2.8rem] font-extrabold stat-glow text-accent-3 leading-none mb-2">~45%</div>
+            <p class="text-text-secondary text-base">of one year's EBITDA is lost to supply chain disruptions per decade — and shocks lasting a month or more hit every <strong class="text-text">3.7 years</strong> on average.</p>
+          </div>
+          <div class="glass-card p-6 reveal">
+            <div class="text-sm uppercase tracking-[0.15em] text-text-muted mb-3">McKinsey / Supply Chain Brain</div>
+            <div class="text-[2.8rem] font-extrabold stat-glow text-accent-1 leading-none mb-2">Only 17%</div>
+            <p class="text-text-secondary text-base">of companies have full supply chain visibility — meaning 83% are flying blind when disruptions hit.</p>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="glass-card p-6 reveal">
+            <div class="text-sm uppercase tracking-[0.15em] text-text-muted mb-3">Coupa / Supply Chain Dive</div>
+            <div class="text-[2.8rem] font-extrabold stat-glow text-accent-2 leading-none mb-2">$16M/yr</div>
+            <p class="text-text-secondary text-base">Average annual cost of direct procurement disruptions per organization. Early AI adopters cut logistics costs by <strong class="text-text">15%</strong> and reduce inventory by <strong class="text-text">35%</strong>.</p>
+          </div>
+          <div class="glass-card p-6 reveal">
+            <div class="text-sm uppercase tracking-[0.15em] text-text-muted mb-3">The core argument</div>
+            <p class="text-lg text-text leading-[1.55]">Resilient systems cost more upfront. AI and data are how we prove they cost less over 10 years — by making avoided downside visible and quantifiable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ data-slide="7">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:420px;height:420px;top:-120px;right:-90px;background:var(--color-accent-3);opacity:.09"></div>
+      <div class="blob" style="width:280px;height:280px;bottom:-70px;left:-50px;background:var(--color-accent-1);opacity:.08"></div>
+    </div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content">
+      <div class="kicker reveal mb-3">Profit lever 3</div>
+      <h2 class="font-display text-[clamp(2rem,4.1vw,3rem)] mb-8 reveal">Cost avoidance and downside protection</h2>
+      <div class="grid grid-cols-[1fr_1fr] gap-7 items-center">
+        <div class="glass-card p-8 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-text-muted mb-4">What resilience prevents</div>
+          <ul class="space-y-4 text-lg text-text-secondary">
+            <li>Fewer recalls, fines, and reputational crises</li>
+            <li>Fewer shocks that blow up margin</li>
+            <li>More adaptability when climate and policy shift</li>
+            <li>Cheaper systems over a 10-year horizon</li>
+          </ul>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-[3rem] font-extrabold stat-glow text-accent-3 mb-5">Upfront ≠ total cost</div>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-sm text-text-muted mb-2"><span>Upfront expense visibility</span><span>95%</span></div>
+              <div class="bar-track"><div class="bar-fill" data-width="95"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm text-text-muted mb-2"><span>Avoided downside visibility</span><span>28%</span></div>
+              <div class="bar-track"><div class="bar-fill" data-width="28"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm text-text-muted mb-2"><span>Need for AI / data proof</span><span>88%</span></div>
+              <div class="bar-track"><div class="bar-fill" data-width="88"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-8" data-slide="8">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:330px;height:330px;top:-70px;right:-70px;background:var(--color-accent-1);opacity:.08"></div>
+      <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:var(--color-accent-2);opacity:.06"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Bridge line</div>
+      <h2 class="font-display text-[clamp(2rem,4vw,3rem)] mb-8 reveal">Why tech and AI matter</h2>
+      <div class="grid grid-cols-[1.05fr_.95fr] gap-8 items-center">
+        <div class="glass-card p-8 reveal">
+          <p class="text-[1.28rem] leading-[1.6] text-text">Right now, a lot of regen and supply-chain work still runs on trust, paper, spreadsheets, and WhatsApp. To capital, that looks like <span class="text-accent-3 font-semibold">risk</span>.</p>
+        </div>
+        <div class="space-y-4">
+          <div class="glass-card p-6 reveal">Turn noise into clean data.</div>
+          <div class="glass-card p-6 reveal">Link field reality to contracts and financing.</div>
+          <div class="glass-card p-6 reveal">Make resilience auditable instead of aspirational.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-9" data-slide="9">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:420px;height:420px;top:-110px;left:-90px;background:var(--color-accent-2);opacity:.08"></div>
+      <div class="blob" style="width:300px;height:300px;bottom:-60px;right:-60px;background:var(--color-accent-1);opacity:.08"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Audience roles</div>
+      <h2 class="font-display text-[clamp(2rem,4vw,3rem)] mb-8 reveal">Who has to do what</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="glass-card p-7 role-card reveal"><div class="text-accent-2 uppercase tracking-[0.16em] text-sm mb-3">Alt-food founders</div><p class="text-xl leading-[1.5] text-text-secondary">Design economics not just around replacing a product, but around stabilizing supply, reducing volatility, and unlocking new demand.</p></div>
+        <div class="glass-card p-7 role-card reveal"><div class="text-accent-1 uppercase tracking-[0.16em] text-sm mb-3">Tech / AI builders</div><p class="text-xl leading-[1.5] text-text-secondary">Turn resilience into numbers on a dashboard, connect field data to capital, and automate the friction that keeps margins thin.</p></div>
+        <div class="glass-card p-7 role-card reveal"><div class="text-accent-3 uppercase tracking-[0.16em] text-sm mb-3">Operators / supply chain</div><p class="text-xl leading-[1.5] text-text-secondary">Experiment with contracts, logistics, and relationships that share risk more fairly and still deliver what buyers need.</p></div>
+        <div class="glass-card p-7 role-card reveal"><div class="text-accent-2 uppercase tracking-[0.16em] text-sm mb-3">Investors / family offices</div><p class="text-xl leading-[1.5] text-text-secondary">Underwrite new risk-sharing models, fund infrastructure and tools, and treat resilience as a profit center instead of a CSR line.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-10" data-slide="10">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:540px;height:540px;top:-120px;right:-100px;background:var(--color-accent-1);opacity:.15"></div>
+      <div class="blob" style="width:310px;height:310px;bottom:-90px;left:-50px;background:var(--color-accent-2);opacity:.12"></div>
+      <div class="blob" style="width:220px;height:220px;top:55%;left:14%;background:var(--color-accent-3);opacity:.1"></div>
+    </div>
+    <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-[118px] mb-5 animate-[float_3s_ease-in-out_infinite]">🍽️</div>
+      <div class="kicker reveal mb-5">Closing theme</div>
+      <h2 class="font-display text-[clamp(2.5rem,5.5vw,4.7rem)] tracking-tight mb-5 reveal">The future of food gets built on one balance sheet.</h2>
+      <p class="text-[clamp(1.05rem,1.8vw,1.45rem)] max-w-[900px] mx-auto text-text-secondary reveal">Regenerative supply systems cannot collapse under cashflow stress. Future foods have to pencil for buyers and investors. Tech and AI have to make all of it visible, verifiable, and investable.</p>
+      <div class="mt-8 text-lg text-accent-2 reveal">Profitability is what turns resilience from side bet to system.</div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-controls">
+  <button class="nav-btn" aria-label="Previous slide" onclick="changeSlide(-1)">&#8249;</button>
+  <div class="slide-dots" id="dots"></div>
+  <button class="nav-btn" aria-label="Next slide" onclick="changeSlide(1)">&#8250;</button>
+  <span class="slide-counter" id="counter">1 / 10</span>
+</div>
+
+<script>
+let current = 1;
+const total = document.querySelectorAll('.slide').length;
+const dotsContainer = document.getElementById('dots');
+const counter = document.getElementById('counter');
+for (let i = 1; i <= total; i++) { const dot = document.createElement('div'); dot.className = 'dot' + (i === 1 ? ' active' : ''); dot.onclick = () => goToSlide(i); dotsContainer.appendChild(dot); }
+function goToSlide(n) {
+  const prev = document.querySelector('.slide.active');
+  const next = document.querySelector(`.slide[data-slide="${n}"]`);
+  if (prev) prev.classList.remove('active');
+  if (next) { next.classList.add('active'); animateSlide(next); }
+  current = n; updateNav();
+}
+function changeSlide(dir) { let next = current + dir; if (next < 1) next = total; if (next > total) next = 1; goToSlide(next); }
+function updateNav() { document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === current)); counter.textContent = current + ' / ' + total; }
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); } });
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => { const diff = touchStartX - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1); });
+function animateSlide(slide) {
+  slide.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transition = 'none'; el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.offsetHeight;
+    const delay = i * 0.08;
+    el.style.transition = `opacity 0.35s ease ${delay}s, transform 0.35s ease ${delay}s`;
+    el.style.opacity = '1'; el.style.transform = 'translateY(0)';
+  });
+  animateSlideEffects(slide);
+}
+function animateSlideEffects(slide) {
+  slide.querySelectorAll('.bar-fill:not(.fill-init)').forEach((bar, i) => {
+    bar.classList.add('fill-init');
+    bar.style.width = '0%'; bar.style.transition = `width 0.6s ease ${i * 0.08}s`; bar.offsetHeight; bar.style.width = bar.dataset.width + '%';
+  });
+}
+document.addEventListener('mousemove', (e) => {
+  const spotlight = document.querySelector('.mouse-spotlight');
+  if (spotlight) spotlight.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(56,193,114,0.07), transparent 42%)`;
+});
+window.initParticles = function(canvas, options) {
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+  const interactive = options.interactive !== false;
+  const count = options.count || (interactive ? 55 : 18);
+  let mx = -1000, my = -1000;
+  const particles = Array.from({ length: count }, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3, size:Math.random()*2.4+.8, alpha:Math.random()*.35+.08 }));
+  if (interactive) {
+    canvas.addEventListener('mousemove', (e) => { const rect = canvas.getBoundingClientRect(); mx = e.clientX - rect.left; my = e.clientY - rect.top; });
+    canvas.addEventListener('mouseleave', () => { mx = -1000; my = -1000; });
+  }
+  (function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      if (interactive) {
+        const dx = p.x - mx, dy = p.y - my, dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120 && dist > 0) { const force = (120-dist)/120*2; p.vx += (dx/dist)*force*.1; p.vy += (dy/dist)*force*.1; }
+      }
+      p.vx *= .98; p.vy *= .98; p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0; if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(56,193,114,${p.alpha})`; ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  })();
+};
+document.querySelectorAll('.particle-canvas').forEach(c => window.initParticles(c, { interactive: true, count: 55 }));
+document.querySelectorAll('.particle-canvas-ambient').forEach(c => window.initParticles(c, { interactive: false, count: 18 }));
+try { animateSlide(document.querySelector('.slide.active')); } catch(e) { console.warn(e); }
+</script>
+</body>
+</html>“Managers must convert society’s needs into opportunities for profitable business.”<div class="mt-5 text-base tracking-[0.14em] uppercase text-text-muted">— Peter Drucker</div><html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="slides-format" content="viewport" />
+  <title>Niche to Necessary: Resilient Food Systems That Pay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-bg: #0d1b0e;
+      --color-bg-deep: #081109;
+      --color-surface: #17261a;
+      --color-text: #eef4e9;
+      --color-text-secondary: #d2ddcc;
+      --color-text-muted: #8ea18e;
+      --color-accent-1: #38c172;
+      --color-accent-2: #b6d49c;
+      --color-accent-3: #f0c36b;
+      --color-glass-bg: rgba(255,255,255,0.06);
+      --color-glass-border: rgba(255,255,255,0.10);
+      --color-vignette: rgba(0,0,0,0.42);
+      --font-display: 'Instrument Serif', serif;
+      --font-body: 'Inter', sans-serif;
+    }
+  </style>
+  <style>
+    :root { --color-bg: #0d1b0e; --color-text: #eef4e9; --glow-color-rgb: 56,193,114; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { background: var(--color-bg); margin: 0; }
+    body { font-family: var(--font-body); color: var(--color-text); overflow: hidden; height: 100vh; width: 100vw; }
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide { position: absolute; inset: 0; background: var(--color-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transform: scale(0.95); transition: opacity 0.7s ease, transform 0.7s ease; pointer-events: none; overflow: hidden; }
+    .slide.active { opacity: 1; transform: scale(1); pointer-events: all; }
+    .slide > .content { position: relative; z-index: 2; width: 100%; max-width: 1120px; padding: clamp(1.5rem, 4vw, 4rem); }
+    .nav-controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; z-index: 100; background: rgba(12,20,13,0.65); backdrop-filter: blur(12px); padding: 10px 24px; border-radius: 999px; border: 1px solid var(--color-glass-border); }
+    .nav-btn { width: 40px; height: 40px; border: none; background: var(--color-glass-bg); color: var(--color-accent-1); border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .slide-dots { display: flex; gap: 8px; }
+    .slide-dots .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; transition: background .3s, transform .3s; }
+    .slide-dots .dot.active { background: var(--color-accent-1); transform: scale(1.25); }
+    .slide-counter { font-size: .8rem; color: var(--color-text-muted); min-width: 44px; text-align: center; }
+    .reveal { opacity: 0; transform: translateY(20px); }
+    .gradient-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(90px); animation: float-slow 14s ease-in-out infinite; }
+    .blob:nth-child(2) { animation: float-drift 16s ease-in-out infinite; }
+    .blob:nth-child(3) { animation: float-slow 20s ease-in-out infinite reverse; }
+    .slide::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E"); background-repeat: repeat; background-size: 256px 256px; opacity: .05; mix-blend-mode: overlay; }
+    .slide::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at center, transparent 48%, var(--color-vignette) 100%); }
+    .text-glow { text-shadow: 0 0 22px rgba(var(--glow-color-rgb), .38); }
+    .stat-glow { text-shadow: 0 0 34px rgba(var(--glow-color-rgb), .55); }
+    .glass-card { background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; }
+    .kicker { letter-spacing: .28em; text-transform: uppercase; font-size: .8rem; color: var(--color-text-muted); }
+    .line { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent); }
+    .bar-track { height: 18px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--color-accent-1), var(--color-accent-2)); width: 0%; }
+    .role-card { min-height: 230px; }
+    @keyframes float-slow { 0%{transform:translate(0,0) scale(1)} 25%{transform:translate(40px,-35px) scale(1.08)} 50%{transform:translate(-30px,30px) scale(.92)} 75%{transform:translate(45px,10px) scale(1.06)} 100%{transform:translate(0,0) scale(1)} }
+    @keyframes float-drift { 0%{transform:translate(0,0) scale(1) rotate(0deg)} 33%{transform:translate(-55px,-50px) scale(1.12) rotate(3deg)} 66%{transform:translate(35px,25px) scale(.9) rotate(-2deg)} 100%{transform:translate(0,0) scale(1) rotate(0deg)} }
+    @keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-14px);} }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: .2s !important; } }
+  </style>
+</head>
+<body>
+<div class="mouse-spotlight" style="position:fixed;inset:0;z-index:99;pointer-events:none;"></div>
+<div class="deck">
+  <div class="slide slide-1 active" data-slide="1">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:520px;height:520px;top:-110px;right:-90px;background:var(--color-accent-1);opacity:.16"></div>
+      <div class="blob" style="width:320px;height:320px;bottom:-80px;left:-50px;background:var(--color-accent-2);opacity:.13"></div>
+      <div class="blob" style="width:220px;height:220px;top:42%;left:14%;background:var(--color-accent-3);opacity:.1"></div>
+    </div>
+    <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-[118px] mb-4 animate-[float_3s_ease-in-out_infinite]">🌾</div>
+      <div class="kicker reveal mb-5">Food · Capital · Resilience · AI</div>
+      <h1 class="font-display text-[clamp(2.8rem,6.5vw,5.6rem)] font-normal bg-linear-to-br from-accent-1 via-accent-2 to-accent-1 bg-clip-text text-transparent tracking-tight mb-5 reveal">Niche to Necessary: Resilient Food Systems That Pay</h1>
+      <p class="text-[clamp(1rem,1.7vw,1.35rem)] max-w-[880px] mx-auto text-text-secondary reveal">Regen agriculture, future foods, and intelligent systems are all fighting the same economic battle: risk, margin, cashflow, and scalability.</p>
+    </div>
+  </div>
+
+  <div class="slide slide-2" data-slide="2">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:360px;height:360px;top:-60px;right:-70px;background:var(--color-accent-1);opacity:.08"></div>
+      <div class="blob" style="width:260px;height:260px;bottom:-60px;left:-40px;background:var(--color-accent-2);opacity:.07"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-4">Core thesis</div>
+      <h2 class="font-display text-[clamp(2rem,4.5vw,3.4rem)] mb-6 reveal">If it does not clear economically, it stays niche.</h2>
+      <div class="glass-card p-14 reveal flex flex-col items-center justify-center text-center" style="min-height:160px">
+        <p class="font-display text-[clamp(1.6rem,2.8vw,2.6rem)] leading-[1.35] text-text" style="font-style:italic">“Show me the incentive and I’ll show you the outcome.”</p>
+        <p class="mt-6 text-sm tracking-[0.22em] uppercase text-text-muted">— Charlie Munger</p>
+      </div>
+      <div class="grid grid-cols-3 gap-5 mt-8">
+        <div class="glass-card p-6 reveal"><div class="text-accent-1 text-sm uppercase tracking-[0.18em] mb-3">Camp 1</div><div class="text-xl font-semibold mb-2">Regen + supply chains</div><p class="text-text-secondary">Land-based operators working in actual production, sourcing, and logistics.</p></div>
+        <div class="glass-card p-6 reveal"><div class="text-accent-2 text-sm uppercase tracking-[0.18em] mb-3">Camp 2</div><div class="text-xl font-semibold mb-2">Alt-food + future food</div><p class="text-text-secondary">Builders creating new proteins, ingredients, and demand-side categories.</p></div>
+        <div class="glass-card p-6 reveal"><div class="text-accent-3 text-sm uppercase tracking-[0.18em] mb-3">Camp 3</div><div class="text-xl font-semibold mb-2">Tech + AI infrastructure</div><p class="text-text-secondary">Teams making resilience visible, verifiable, efficient, and investable.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-3" data-slide="3">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:440px;height:440px;top:-110px;left:-90px;background:var(--color-accent-3);opacity:.08"></div>
+      <div class="blob" style="width:300px;height:300px;bottom:-70px;right:-50px;background:var(--color-accent-1);opacity:.08"></div>
+    </div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content">
+      <div class="kicker reveal mb-3">Shared constraint</div>
+      <h2 class="font-display text-[clamp(2rem,4.3vw,3.2rem)] mb-8 reveal">Different products. Same math.</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="glass-card p-8 reveal">
+          <div class="text-4xl stat-glow text-accent-1 mb-4">1</div>
+          <h3 class="text-2xl font-semibold mb-3">Risk</h3>
+          <p class="text-text-secondary">Supply shocks, climate exposure, manufacturing uncertainty, buyer behavior, and operational fragility.</p>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-4xl stat-glow text-accent-2 mb-4">2</div>
+          <h3 class="text-2xl font-semibold mb-3">Margin</h3>
+          <p class="text-text-secondary">The economics often break where costs, complexity, and incentives stop lining up cleanly.</p>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-4xl stat-glow text-accent-3 mb-4">3</div>
+          <h3 class="text-2xl font-semibold mb-3">Time to cashflow</h3>
+          <p class="text-text-secondary">Soil transitions take time, bioprocessing takes scale, and software still has to get paid for.</p>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-4xl stat-glow text-accent-1 mb-4">4</div>
+          <h3 class="text-2xl font-semibold mb-3">Scalability in mess</h3>
+          <p class="text-text-secondary">Food systems are local, fragmented, human, regulated, and deeply inconvenient for clean spreadsheets.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-4" data-slide="4">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:350px;height:350px;top:-80px;right:-60px;background:var(--color-accent-2);opacity:.08"></div>
+      <div class="blob" style="width:260px;height:260px;bottom:-50px;left:-50px;background:var(--color-accent-1);opacity:.07"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Archetypes</div>
+      <h2 class="font-display text-[clamp(2rem,4vw,3rem)] mb-8 reveal">Three lanes, three versions of fragility</h2>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="glass-card p-7 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-accent-1 mb-3">Regen / heritage</div>
+          <h3 class="text-2xl font-semibold mb-3">Better ecological outcomes</h3>
+          <ul class="space-y-3 text-text-secondary text-[1.03rem]">
+            <li>Fragile producer economics</li>
+            <li>Higher coordination burden</li>
+            <li>Incentives often misaligned</li>
+          </ul>
+        </div>
+        <div class="glass-card p-7 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-accent-2 mb-3">Alt-food / future food</div>
+          <h3 class="text-2xl font-semibold mb-3">Great story and strong science</h3>
+          <ul class="space-y-3 text-text-secondary text-[1.03rem]">
+            <li>High capex</li>
+            <li>Uncertain adoption curves</li>
+            <li>Tricky unit economics</li>
+          </ul>
+        </div>
+        <div class="glass-card p-7 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-accent-3 mb-3">Tech / AI</div>
+          <h3 class="text-2xl font-semibold mb-3">Strong promise</h3>
+          <ul class="space-y-3 text-text-secondary text-[1.03rem]">
+            <li>Hard to get paid consistently</li>
+            <li>Data fragmentation</li>
+            <li>Integration friction</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-5" data-slide="5">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:500px;height:500px;top:-130px;right:-80px;background:var(--color-accent-1);opacity:.12"></div>
+      <div class="blob" style="width:240px;height:240px;bottom:0;left:8%;background:var(--color-accent-3);opacity:.08"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Profit lever 1</div>
+      <h2 class="font-display text-[clamp(2rem,4.2vw,3.1rem)] mb-8 reveal">Reduced volatility and risk</h2>
+      <div class="grid grid-cols-[1.2fr_.8fr] gap-8 items-center">
+        <div class="space-y-5">
+          <div class="glass-card p-6 reveal"><strong class="text-accent-1">Regen / supply chains:</strong> diversified sourcing, healthier soils, less dependence on one brittle node.</div>
+          <div class="glass-card p-6 reveal"><strong class="text-accent-2">Alt-food:</strong> partial decoupling of protein supply from land, weather, and water constraints.</div>
+          <div class="glass-card p-6 reveal"><strong class="text-accent-3">AI / tech:</strong> forecasting, early warning, traceability, and transparency that can actually travel into contracts.</div>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-text-muted mb-5">Capital framing</div>
+          <div class="text-[2.7rem] font-extrabold text-accent-1 stat-glow mb-2">Risk ↓</div>
+          <div class="line my-5"></div>
+          <p class="text-lg leading-[1.55] text-text-secondary">If you reduce volatility in supply, you reduce risk. If you can measure that reduction, you can price it. That is where capital can get paid.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-6" data-slide="6">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:360px;height:360px;top:-90px;left:-60px;background:var(--color-accent-2);opacity:.08"></div>
+      <div class="blob" style="width:260px;height:260px;bottom:-40px;right:-30px;background:var(--color-accent-1);opacity:.07"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Profit lever 2</div>
+      <h2 class="font-display text-[clamp(2rem,4.1vw,3rem)] mb-8 reveal">New revenue and premium</h2>
+      <div class="grid grid-cols-3 gap-5 mb-7">
+        <div class="glass-card p-6 reveal"><h3 class="text-xl font-semibold mb-3 text-accent-1">Regen / heritage</h3><p class="text-text-secondary">Operationally regenerative systems that improve soil, sourcing resilience, and input stability while still earning customer trust and premium pricing.</p></div>
+        <div class="glass-card p-6 reveal"><h3 class="text-xl font-semibold mb-3 text-accent-2">Alt-food</h3><p class="text-text-secondary">New categories, functional foods, and climate-branded demand that expand the market.</p></div>
+        <div class="glass-card p-6 reveal"><h3 class="text-xl font-semibold mb-3 text-accent-3">AI / tech</h3><p class="text-text-secondary">Data products, assurance tools, compliance layers, and procurement intelligence buyers will pay for.</p></div>
+      </div>
+      <div class="glass-card p-8 reveal">
+        <div class="grid grid-cols-3 gap-5 mb-5">
+          <div class="text-center"><div class="text-[1.9rem] font-extrabold text-accent-1 stat-glow">89%</div><p class="text-text-muted text-xs mt-1 uppercase tracking-wider">buyers reward regenerative value<br/><span class="normal-case not-italic text-[0.7rem]">Regenified 2024</span></p></div>
+          <div class="text-center"><div class="text-[1.9rem] font-extrabold text-accent-2 stat-glow">$881M</div><p class="text-text-muted text-xs mt-1 uppercase tracking-wider">alt-protein investment 2025<br/><span class="normal-case not-italic text-[0.7rem]">GFI 2026</span></p></div>
+          <div class="text-center"><div class="text-[1.9rem] font-extrabold text-accent-3 stat-glow">$21.5B</div><p class="text-text-muted text-xs mt-1 uppercase tracking-wider">regen ag market by 2035<br/><span class="normal-case not-italic text-[0.7rem]">FMI 2025</span></p></div>
+        </div>
+        <p class="text-base leading-[1.55] text-text-secondary">Resilience can create new revenue streams if we treat provenance, reduced deforestation, and lower risk as things we can <span class="text-accent-1 font-semibold">sell</span>, not just things we can report.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-7" data-slide="7">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:420px;height:420px;top:-120px;right:-90px;background:var(--color-accent-3);opacity:.09"></div>
+      <div class="blob" style="width:280px;height:280px;bottom:-70px;left:-50px;background:var(--color-accent-1);opacity:.08"></div>
+    </div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content">
+      <div class="kicker reveal mb-3">Profit lever 3</div>
+      <h2 class="font-display text-[clamp(2rem,4.1vw,3rem)] mb-7 reveal">Cost avoidance and downside protection</h2>
+      <div class="grid grid-cols-[1fr_1fr] gap-7 items-start">
+        <div class="space-y-4">
+          <div class="glass-card p-6 reveal">
+            <div class="text-sm uppercase tracking-[0.15em] text-text-muted mb-3">McKinsey Global Institute</div>
+            <div class="text-[2.8rem] font-extrabold stat-glow text-accent-3 leading-none mb-2">~45%</div>
+            <p class="text-text-secondary text-base">of one year's EBITDA is lost to supply chain disruptions per decade — and shocks lasting a month or more hit every <strong class="text-text">3.7 years</strong> on average.</p>
+          </div>
+          <div class="glass-card p-6 reveal">
+            <div class="text-sm uppercase tracking-[0.15em] text-text-muted mb-3">McKinsey / Supply Chain Brain</div>
+            <div class="text-[2.8rem] font-extrabold stat-glow text-accent-1 leading-none mb-2">Only 17%</div>
+            <p class="text-text-secondary text-base">of companies have full supply chain visibility — meaning 83% are flying blind when disruptions hit.</p>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="glass-card p-6 reveal">
+            <div class="text-sm uppercase tracking-[0.15em] text-text-muted mb-3">Coupa / Supply Chain Dive</div>
+            <div class="text-[2.8rem] font-extrabold stat-glow text-accent-2 leading-none mb-2">$16M/yr</div>
+            <p class="text-text-secondary text-base">Average annual cost of direct procurement disruptions per organization. Early AI adopters cut logistics costs by <strong class="text-text">15%</strong> and reduce inventory by <strong class="text-text">35%</strong>.</p>
+          </div>
+          <div class="glass-card p-6 reveal">
+            <div class="text-sm uppercase tracking-[0.15em] text-text-muted mb-3">The core argument</div>
+            <p class="text-lg text-text leading-[1.55]">Resilient systems cost more upfront. AI and data are how we prove they cost less over 10 years — by making avoided downside visible and quantifiable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ data-slide="7">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:420px;height:420px;top:-120px;right:-90px;background:var(--color-accent-3);opacity:.09"></div>
+      <div class="blob" style="width:280px;height:280px;bottom:-70px;left:-50px;background:var(--color-accent-1);opacity:.08"></div>
+    </div>
+    <canvas class="particle-canvas-ambient" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content">
+      <div class="kicker reveal mb-3">Profit lever 3</div>
+      <h2 class="font-display text-[clamp(2rem,4.1vw,3rem)] mb-8 reveal">Cost avoidance and downside protection</h2>
+      <div class="grid grid-cols-[1fr_1fr] gap-7 items-center">
+        <div class="glass-card p-8 reveal">
+          <div class="text-sm uppercase tracking-[0.16em] text-text-muted mb-4">What resilience prevents</div>
+          <ul class="space-y-4 text-lg text-text-secondary">
+            <li>Fewer recalls, fines, and reputational crises</li>
+            <li>Fewer shocks that blow up margin</li>
+            <li>More adaptability when climate and policy shift</li>
+            <li>Cheaper systems over a 10-year horizon</li>
+          </ul>
+        </div>
+        <div class="glass-card p-8 reveal">
+          <div class="text-[3rem] font-extrabold stat-glow text-accent-3 mb-5">Upfront ≠ total cost</div>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-sm text-text-muted mb-2"><span>Upfront expense visibility</span><span>95%</span></div>
+              <div class="bar-track"><div class="bar-fill" data-width="95"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm text-text-muted mb-2"><span>Avoided downside visibility</span><span>28%</span></div>
+              <div class="bar-track"><div class="bar-fill" data-width="28"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm text-text-muted mb-2"><span>Need for AI / data proof</span><span>88%</span></div>
+              <div class="bar-track"><div class="bar-fill" data-width="88"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-8" data-slide="8">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:330px;height:330px;top:-70px;right:-70px;background:var(--color-accent-1);opacity:.08"></div>
+      <div class="blob" style="width:240px;height:240px;bottom:-50px;left:-30px;background:var(--color-accent-2);opacity:.06"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Bridge line</div>
+      <h2 class="font-display text-[clamp(2rem,4vw,3rem)] mb-8 reveal">Why tech and AI matter</h2>
+      <div class="grid grid-cols-[1.05fr_.95fr] gap-8 items-center">
+        <div class="glass-card p-8 reveal">
+          <p class="text-[1.28rem] leading-[1.6] text-text">Right now, a lot of regen and supply-chain work still runs on trust, paper, spreadsheets, and WhatsApp. To capital, that looks like <span class="text-accent-3 font-semibold">risk</span>.</p>
+        </div>
+        <div class="space-y-4">
+          <div class="glass-card p-6 reveal">Turn noise into clean data.</div>
+          <div class="glass-card p-6 reveal">Link field reality to contracts and financing.</div>
+          <div class="glass-card p-6 reveal">Make resilience auditable instead of aspirational.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-9" data-slide="9">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:420px;height:420px;top:-110px;left:-90px;background:var(--color-accent-2);opacity:.08"></div>
+      <div class="blob" style="width:300px;height:300px;bottom:-60px;right:-60px;background:var(--color-accent-1);opacity:.08"></div>
+    </div>
+    <div class="content">
+      <div class="kicker reveal mb-3">Audience roles</div>
+      <h2 class="font-display text-[clamp(2rem,4vw,3rem)] mb-8 reveal">Who has to do what</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="glass-card p-7 role-card reveal"><div class="text-accent-2 uppercase tracking-[0.16em] text-sm mb-3">Alt-food founders</div><p class="text-xl leading-[1.5] text-text-secondary">Design economics not just around replacing a product, but around stabilizing supply, reducing volatility, and unlocking new demand.</p></div>
+        <div class="glass-card p-7 role-card reveal"><div class="text-accent-1 uppercase tracking-[0.16em] text-sm mb-3">Tech / AI builders</div><p class="text-xl leading-[1.5] text-text-secondary">Turn resilience into numbers on a dashboard, connect field data to capital, and automate the friction that keeps margins thin.</p></div>
+        <div class="glass-card p-7 role-card reveal"><div class="text-accent-3 uppercase tracking-[0.16em] text-sm mb-3">Operators / supply chain</div><p class="text-xl leading-[1.5] text-text-secondary">Experiment with contracts, logistics, and relationships that share risk more fairly and still deliver what buyers need.</p></div>
+        <div class="glass-card p-7 role-card reveal"><div class="text-accent-2 uppercase tracking-[0.16em] text-sm mb-3">Investors / family offices</div><p class="text-xl leading-[1.5] text-text-secondary">Underwrite new risk-sharing models, fund infrastructure and tools, and treat resilience as a profit center instead of a CSR line.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-10" data-slide="10">
+    <div class="gradient-mesh">
+      <div class="blob" style="width:540px;height:540px;top:-120px;right:-100px;background:var(--color-accent-1);opacity:.15"></div>
+      <div class="blob" style="width:310px;height:310px;bottom:-90px;left:-50px;background:var(--color-accent-2);opacity:.12"></div>
+      <div class="blob" style="width:220px;height:220px;top:55%;left:14%;background:var(--color-accent-3);opacity:.1"></div>
+    </div>
+    <canvas class="particle-canvas" style="position:absolute;inset:0;z-index:1"></canvas>
+    <div class="content text-center">
+      <div class="text-[118px] mb-5 animate-[float_3s_ease-in-out_infinite]">🍽️</div>
+      <div class="kicker reveal mb-5">Closing theme</div>
+      <h2 class="font-display text-[clamp(2.5rem,5.5vw,4.7rem)] tracking-tight mb-5 reveal">The future of food gets built on one balance sheet.</h2>
+      <p class="text-[clamp(1.05rem,1.8vw,1.45rem)] max-w-[900px] mx-auto text-text-secondary reveal">Regenerative supply systems cannot collapse under cashflow stress. Future foods have to pencil for buyers and investors. Tech and AI have to make all of it visible, verifiable, and investable.</p>
+      <div class="mt-8 text-lg text-accent-2 reveal">Profitability is what turns resilience from side bet to system.</div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-controls">
+  <button class="nav-btn" aria-label="Previous slide" onclick="changeSlide(-1)">&#8249;</button>
+  <div class="slide-dots" id="dots"></div>
+  <button class="nav-btn" aria-label="Next slide" onclick="changeSlide(1)">&#8250;</button>
+  <span class="slide-counter" id="counter">1 / 10</span>
+</div>
+
+<script>
+let current = 1;
+const total = document.querySelectorAll('.slide').length;
+const dotsContainer = document.getElementById('dots');
+const counter = document.getElementById('counter');
+for (let i = 1; i <= total; i++) { const dot = document.createElement('div'); dot.className = 'dot' + (i === 1 ? ' active' : ''); dot.onclick = () => goToSlide(i); dotsContainer.appendChild(dot); }
+function goToSlide(n) {
+  const prev = document.querySelector('.slide.active');
+  const next = document.querySelector(`.slide[data-slide="${n}"]`);
+  if (prev) prev.classList.remove('active');
+  if (next) { next.classList.add('active'); animateSlide(next); }
+  current = n; updateNav();
+}
+function changeSlide(dir) { let next = current + dir; if (next < 1) next = total; if (next > total) next = 1; goToSlide(next); }
+function updateNav() { document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === current)); counter.textContent = current + ' / ' + total; }
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); } });
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => { const diff = touchStartX - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1); });
+function animateSlide(slide) {
+  slide.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transition = 'none'; el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.offsetHeight;
+    const delay = i * 0.08;
+    el.style.transition = `opacity 0.35s ease ${delay}s, transform 0.35s ease ${delay}s`;
+    el.style.opacity = '1'; el.style.transform = 'translateY(0)';
+  });
+  animateSlideEffects(slide);
+}
+function animateSlideEffects(slide) {
+  slide.querySelectorAll('.bar-fill:not(.fill-init)').forEach((bar, i) => {
+    bar.classList.add('fill-init');
+    bar.style.width = '0%'; bar.style.transition = `width 0.6s ease ${i * 0.08}s`; bar.offsetHeight; bar.style.width = bar.dataset.width + '%';
+  });
+}
+document.addEventListener('mousemove', (e) => {
+  const spotlight = document.querySelector('.mouse-spotlight');
+  if (spotlight) spotlight.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(56,193,114,0.07), transparent 42%)`;
+});
+window.initParticles = function(canvas, options) {
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+  const interactive = options.interactive !== false;
+  const count = options.count || (interactive ? 55 : 18);
+  let mx = -1000, my = -1000;
+  const particles = Array.from({ length: count }, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3, size:Math.random()*2.4+.8, alpha:Math.random()*.35+.08 }));
+  if (interactive) {
+    canvas.addEventListener('mousemove', (e) => { const rect = canvas.getBoundingClientRect(); mx = e.clientX - rect.left; my = e.clientY - rect.top; });
+    canvas.addEventListener('mouseleave', () => { mx = -1000; my = -1000; });
+  }
+  (function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      if (interactive) {
+        const dx = p.x - mx, dy = p.y - my, dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120 && dist > 0) { const force = (120-dist)/120*2; p.vx += (dx/dist)*force*.1; p.vy += (dy/dist)*force*.1; }
+      }
+      p.vx *= .98; p.vy *= .98; p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0; if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(56,193,114,${p.alpha})`; ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  })();
+};
+document.querySelectorAll('.particle-canvas').forEach(c => window.initParticles(c, { interactive: true, count: 55 }));
+document.querySelectorAll('.particle-canvas-ambient').forEach(c => window.initParticles(c, { interactive: false, count: 18 }));
+try { animateSlide(document.querySelector('.slide.active')); } catch(e) { console.warn(e); }
+</script>
+</body>
+</html>

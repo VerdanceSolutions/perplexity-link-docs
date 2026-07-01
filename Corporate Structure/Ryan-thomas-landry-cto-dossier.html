@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CTO Dossier — Verdance</title>
+  <meta name="description" content="Internal alignment artifact documenting Ryan Landry's CTO role, the Verdance Platform, and the company's technical roadmap." />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       VERDANCE DESIGN SYSTEM — CTO Dossier
+       Based on: verdance-boilerplate.html
+       Fonts:    Boska (display) · Satoshi (body) via Fontshare
+       Palette:  Warm beige surfaces · Teal primary · Full dark mode
+    ============================================================ */
+
+    /* --- TOKENS --- */
+    :root, [data-theme="light"] {
+      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.75rem);
+
+      --space-1:  0.25rem;
+      --space-2:  0.5rem;
+      --space-3:  0.75rem;
+      --space-4:  1rem;
+      --space-5:  1.25rem;
+      --space-6:  1.5rem;
+      --space-8:  2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+
+      --color-bg:             #f7f6f2;
+      --color-surface:        #f9f8f5;
+      --color-surface-2:      #fbfbf9;
+      --color-surface-offset: #f1eee8;
+      --color-border:         #d4d1ca;
+      --color-divider:        #dcd9d5;
+
+      --color-text:         #28251d;
+      --color-text-muted:   #66635d;
+      --color-text-faint:   #9a9892;
+      --color-text-inverse: #f9f8f4;
+
+      --color-primary:           #0e6666;
+      --color-primary-hover:     #0b4f50;
+      --color-primary-highlight: #d5e1de;
+
+      --radius-sm:   0.375rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.85rem;
+      --radius-xl:   1.1rem;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px rgba(40, 37, 29, 0.05);
+      --shadow-md: 0 10px 24px rgba(40, 37, 29, 0.08);
+      --shadow-lg: 0 18px 40px rgba(40, 37, 29, 0.12);
+
+      --font-display: 'Boska', Georgia, serif;
+      --font-body:    'Satoshi', Inter, sans-serif;
+
+      --content-default: 1100px;
+      --content-wide:    1280px;
+
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --color-bg:             #171614;
+      --color-surface:        #1c1b19;
+      --color-surface-2:      #22211f;
+      --color-surface-offset: #262523;
+      --color-border:         #393836;
+      --color-divider:        #302f2d;
+      --color-text:           #d4d1cb;
+      --color-text-muted:     #9a9790;
+      --color-text-faint:     #706d67;
+      --color-text-inverse:   #1e1c18;
+      --color-primary:        #65a5a7;
+      --color-primary-hover:  #7cb8b9;
+      --color-primary-highlight: #273535;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.18);
+      --shadow-md: 0 10px 24px rgba(0,0,0,.28);
+      --shadow-lg: 0 18px 40px rgba(0,0,0,.38);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --color-bg:             #171614;
+        --color-surface:        #1c1b19;
+        --color-surface-2:      #22211f;
+        --color-surface-offset: #262523;
+        --color-border:         #393836;
+        --color-divider:        #302f2d;
+        --color-text:           #d4d1cb;
+        --color-text-muted:     #9a9790;
+        --color-text-faint:     #706d67;
+        --color-text-inverse:   #1e1c18;
+        --color-primary:        #65a5a7;
+        --color-primary-hover:  #7cb8b9;
+        --color-primary-highlight: #273535;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,.18);
+        --shadow-md: 0 10px 24px rgba(0,0,0,.28);
+        --shadow-lg: 0 18px 40px rgba(0,0,0,.38);
+      }
+    }
+
+    /* --- BASE RESET --- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--space-16);
+    }
+    body {
+      min-height: 100dvh;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.6;
+    }
+    img, svg { display: block; max-width: 100%; height: auto; }
+    ul[role="list"], ol[role="list"] { list-style: none; }
+    input, button, textarea, select { font: inherit; color: inherit; }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+    p, li, figcaption { text-wrap: pretty; max-width: 72ch; }
+    a, button { transition: all var(--transition); }
+    button { cursor: pointer; border: 0; background: none; color: inherit; }
+
+    ::selection {
+      background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+      color: var(--color-text);
+    }
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* --- ACCESSIBILITY --- */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+    }
+    .skip-link {
+      position: absolute; left: var(--space-4); top: -40px; z-index: 1000;
+      background: var(--color-primary); color: var(--color-text-inverse);
+      padding: var(--space-3) var(--space-4); border-radius: var(--radius-md);
+      text-decoration: none; font-size: var(--text-sm); font-weight: 600;
+    }
+    .skip-link:focus { top: var(--space-4); }
+
+    /* --- HEADER / NAV --- */
+    .site-header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    }
+    .nav {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: var(--space-4);
+      display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);
+    }
+    .brand {
+      display: flex; align-items: center; gap: var(--space-3);
+      font-size: var(--text-sm); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      text-decoration: none; color: var(--color-text);
+    }
+    .brand svg { width: 28px; height: 28px; color: var(--color-primary); }
+    .nav-links {
+      display: none; gap: var(--space-5);
+      font-size: var(--text-sm); list-style: none;
+    }
+    .nav-links a { color: var(--color-text-muted); text-decoration: none; }
+    .nav-links a:hover { color: var(--color-text); }
+    .theme-toggle {
+      min-width: 44px; min-height: 44px;
+      display: grid; place-items: center;
+      border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+      border-radius: var(--radius-full);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+    }
+    .theme-toggle:hover { color: var(--color-text); }
+
+    /* --- HERO SECTION --- */
+    .hero {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: clamp(var(--space-10), 8vw, var(--space-20)) var(--space-4) var(--space-10);
+      display: grid; gap: var(--space-8);
+    }
+    .eyebrow {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: .16em; color: var(--color-text-muted); font-weight: 700;
+      font-family: var(--font-body);
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr; gap: var(--space-8); align-items: end;
+    }
+    .hero-copy h1 {
+      font-size: clamp(2.8rem, 5vw, 5.8rem); max-width: 12ch;
+    }
+    .hero-copy p {
+      margin-top: var(--space-5); font-size: var(--text-lg);
+      color: var(--color-text-muted); max-width: 42ch;
+    }
+    .hero-meta {
+      display: grid; gap: var(--space-4); padding: var(--space-6);
+      background: var(--color-surface);
+      border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      border-radius: var(--radius-xl); box-shadow: var(--shadow-md);
+    }
+    .meta-row {
+      display: grid; grid-template-columns: 120px 1fr; gap: var(--space-4);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .meta-row:last-child { padding-bottom: 0; border-bottom: none; }
+    .meta-label {
+      font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .12em;
+      color: var(--color-text-faint); font-weight: 700; font-family: var(--font-body);
+    }
+    .meta-value { font-size: var(--text-sm); color: var(--color-text); }
+
+    /* --- DIVIDER BAND --- */
+    .divider-band {
+      max-width: var(--content-wide); margin: 0 auto;
+      padding: 0 var(--space-4) var(--space-8);
+    }
+    .divider-band-inner {
+      border-top: 1px solid var(--color-divider); padding-top: var(--space-4);
+      display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap;
+      color: var(--color-text-muted); font-size: var(--text-sm);
+    }
+
+    /* --- MAIN CONTENT --- */
+    main { padding-bottom: var(--space-20); }
+
+    .section {
+      max-width: var(--content-wide); margin: 0 auto;
+      padding: var(--space-8) var(--space-4);
+    }
+    .section-grid {
+      display: grid; grid-template-columns: 1fr; gap: var(--space-8);
+    }
+    .section-intro { display: grid; gap: var(--space-3); }
+    .section-intro h2 { font-size: var(--text-2xl); }
+    .section-intro p { color: var(--color-text-muted); font-size: var(--text-base); }
+
+    /* --- COMPONENT LIBRARY --- */
+    .panel {
+      background: var(--color-surface);
+      border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+    }
+    .prose-stack { display: grid; gap: var(--space-5); }
+    .prose-stack h3 { font-size: var(--text-xl); }
+
+    .mini-label {
+      font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .12em;
+      color: var(--color-text-faint); font-weight: 700; font-family: var(--font-body);
+      margin-bottom: var(--space-2);
+    }
+
+    .two-col { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
+    .card-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
+
+    .stat-card {
+      background: var(--color-surface-2);
+      border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+    }
+    .stat-card h3 {
+      font-family: var(--font-body); font-size: var(--text-sm);
+      text-transform: uppercase; letter-spacing: .09em;
+      color: var(--color-text-faint); margin-bottom: var(--space-3);
+    }
+
+    .quote-block {
+      padding: var(--space-6);
+      border-left: 1px solid var(--color-divider);
+      background: linear-gradient(90deg,
+        color-mix(in srgb, var(--color-primary) 5%, transparent),
+        transparent 70%);
+    }
+    .quote-block p {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 2.2vw, 2.4rem);
+      line-height: 1.18; max-width: 20ch;
+    }
+
+    /* Architecture table */
+    .arch-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+    .arch-table th {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      font-family: var(--font-body); font-size: var(--text-xs);
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--color-text-faint); font-weight: 700;
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .arch-table td {
+      padding: var(--space-4);
+      vertical-align: top;
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .arch-table tr:last-child td { border-bottom: none; }
+    .arch-table td:first-child { font-weight: 600; color: var(--color-text); }
+    .arch-table td:nth-child(2) { color: var(--color-text-muted); }
+
+    /* Status badge */
+    .status-live {
+      display: inline-flex; align-items: center; gap: var(--space-1);
+      padding: var(--space-1) var(--space-3);
+      background: var(--color-primary-highlight);
+      color: var(--color-primary);
+      font-size: var(--text-xs); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      border-radius: var(--radius-full);
+    }
+    .status-dev {
+      display: inline-flex; align-items: center; gap: var(--space-1);
+      padding: var(--space-1) var(--space-3);
+      background: color-mix(in srgb, var(--color-text-faint) 15%, transparent);
+      color: var(--color-text-faint);
+      font-size: var(--text-xs); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      border-radius: var(--radius-full);
+    }
+
+    /* Snapshot table */
+    .snapshot-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+    .snapshot-table td {
+      padding: var(--space-4) 0; vertical-align: top;
+      border-top: 1px solid var(--color-divider);
+    }
+    .snapshot-table tr:first-child td { border-top: none; }
+    .snapshot-table td:first-child {
+      width: 36%; color: var(--color-text-faint);
+      text-transform: uppercase; letter-spacing: .08em;
+      font-size: var(--text-xs); font-weight: 700; padding-right: var(--space-4);
+    }
+
+    /* Revenue path cards */
+    .revenue-card {
+      background: var(--color-surface);
+      border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+      display: grid; gap: var(--space-3);
+    }
+    .revenue-number {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--color-primary);
+      line-height: 1;
+    }
+    .revenue-card h3 { font-size: var(--text-lg); }
+
+    /* Roadmap list */
+    .roadmap-list { display: grid; gap: var(--space-4); list-style: none; }
+    .roadmap-list li {
+      display: grid; grid-template-columns: var(--space-6) 1fr; gap: var(--space-3);
+      align-items: start; font-size: var(--text-base);
+    }
+    .roadmap-list li::before {
+      content: '';
+      width: 6px; height: 6px; background: var(--color-primary);
+      border-radius: var(--radius-full); margin-top: 0.6em;
+    }
+    .roadmap-list li strong { color: var(--color-text); }
+    .roadmap-list li span { color: var(--color-text-muted); }
+
+    /* How-to-use panel */
+    .use-panel {
+      background: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface));
+      border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+      border-radius: var(--radius-xl); padding: var(--space-6);
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex; align-items: center; gap: var(--space-1);
+      padding: var(--space-1) var(--space-3);
+      background: var(--color-primary-highlight);
+      color: var(--color-primary);
+      font-size: var(--text-xs); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      border-radius: var(--radius-full);
+    }
+
+    /* Divider */
+    .hr { border: none; border-top: 1px solid var(--color-divider); margin: var(--space-8) 0; }
+
+    /* --- FOOTER --- */
+    .footer {
+      max-width: var(--content-wide); margin: 0 auto;
+      padding: var(--space-8) var(--space-4) var(--space-12);
+      color: var(--color-text-muted); font-size: var(--text-sm);
+      border-top: 1px solid var(--color-divider);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: var(--space-4);
+    }
+
+    /* --- HOVER LIFT --- */
+    @media (prefers-reduced-motion: no-preference) {
+      .panel, .stat-card, .revenue-card {
+        transition: transform var(--transition), box-shadow var(--transition);
+      }
+      .panel:hover, .stat-card:hover, .revenue-card:hover {
+        transform: translateY(-2px); box-shadow: var(--shadow-md);
+      }
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (min-width: 860px) {
+      .nav-links { display: flex; }
+      .hero-grid { grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); }
+      .section-grid { grid-template-columns: 280px 1fr; }
+      .two-col { grid-template-columns: 1fr 1fr; }
+      .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .card-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    .card-grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="nav">
+      <a href="#" class="brand" aria-label="Verdance home">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true">
+          <path d="M10 34 24 10l14 24"></path>
+          <path d="M18 27h12"></path>
+          <circle cx="24" cy="24" r="18" opacity=".2"></circle>
+        </svg>
+        <span>Verdance</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <ul class="nav-links">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#platform">Platform</a></li>
+          <li><a href="#revenue">Revenue Role</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="content">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="eyebrow">Internal Document · Confidential · June 2026</div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>CTO Dossier</h1>
+          <p>Ryan Landry · Founder & Chief Technology Officer, Verdance Trade Solutions</p>
+        </div>
+        <aside class="hero-meta" aria-label="Quick reference">
+          <div class="meta-row">
+            <div class="meta-label">Role</div>
+            <div class="meta-value">Founder & CTO</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">Company</div>
+            <div class="meta-value">Verdance Trade Solutions</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">Platform</div>
+            <div class="meta-value">Verdance Platform — Live in production</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">Document</div>
+            <div class="meta-value">Internal alignment artifact</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">Maintained by</div>
+            <div class="meta-value">Ryan Landry</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- DIVIDER BAND -->
+    <div class="divider-band">
+      <div class="divider-band-inner">
+        <span>Trade Facilitation · Commercial Infrastructure · Platform Engineering</span>
+        <span>June 2026</span>
+      </div>
+    </div>
+
+    <!-- HOW TO USE -->
+    <section class="section" id="overview">
+      <div class="section-grid">
+        <div class="section-intro">
+          <div class="eyebrow">Purpose</div>
+          <h2>How to Use This Document</h2>
+          <p>The source of truth for the CTO function and the Verdance Platform.</p>
+        </div>
+        <div class="use-panel prose-stack">
+          <p>This is the internal source of truth for what the CTO function is, what the Verdance Platform does, and where both are headed. It is intended to anchor quarterly planning conversations, inform hiring priorities, and define which platform services and client offers are in scope at any given point in Verdance's development.</p>
+          <p>New team members, collaborators, and advisors should treat it as a living reference — not a one-time pitch or static history. When platform capabilities change, services ship, or the strategic roadmap shifts, this document should reflect it.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section class="section">
+      <div class="section-grid">
+        <div class="section-intro">
+          <div class="eyebrow">Overview</div>
+          <h2>Company & Platform</h2>
+          <p>What Verdance is and what the platform does today.</p>
+        </div>
+        <div class="prose-stack">
+          <div class="quote-block">
+            <p>The technical work is done.</p>
+          </div>
+          <div class="panel prose-stack">
+            <p>Verdance Trade Solutions is a founder-led consulting and implementation firm that designs brand, trade, and operating systems for high-trust commercial relationships. The Verdance Platform is a live, production-deployed system that already performs the core functions Verdance sells — trade facilitation, commercial infrastructure design, and embedded procurement coordination.</p>
+            <p>What this document establishes is how that work translates into company value, service delivery capability, and competitive defensibility. The remaining roadmap is about completing the broader service pipeline and refining the commercial offer, not proving the concept.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOUNDING CONTEXT -->
+    <section class="section">
+      <div class="section-grid">
+        <div class="section-intro">
+          <div class="eyebrow">Founding Context</div>
+          <h2>Why This CTO Profile Is Different</h2>
+          <p>An operator-first background that shaped the platform from the inside out.</p>
+        </div>
+        <div class="panel prose-stack">
+          <p>Ryan's path to the CTO role did not begin with software. It began with six years as Logistics Manager at La Villa Coffee Co. (2020–2026), managing vendor relationships, inventory systems, and back-office operations for a specialty importer — the exact category of business Verdance now serves.</p>
+          <p>The platform was not designed from the outside in using assumptions about how trade relationships work. It was designed from the inside out, by someone who has personally managed the friction points — supplier coordination failures, invoice discrepancies, compliance gaps, and relationship breakdowns — that Verdance's infrastructure is built to solve.</p>
+          <p>This is not a common founder profile in this space, and it is one of Verdance's most defensible differentiators.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLATFORM ARCHITECTURE -->
+    <section class="section" id="platform">
+      <div class="section-grid">
+        <div class="section-intro">
+          <div class="eyebrow">Platform Architecture</div>
+          <h2>Four-Service Pipeline</h2>
+          <p>A sequential system from market intelligence to end-to-end trade operations.</p>
+        </div>
+        <div class="panel prose-stack">
+          <p>The Verdance Platform is a four-service commercial system intended to function both as Verdance's internal operating backbone and, ultimately, as a deployable service for trading partners. The four services form a sequential pipeline: raw market intelligence is refined into verified customer profiles, which feed into the trade and commerce engine where deals, shipments, and invoices are managed end-to-end. The internal portal surfaces those functions to the full team with no technical background required.</p>
+          <div style="overflow-x:auto;">
+            <table class="arch-table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Market Intelligence Engine</td>
+                  <td>Lead discovery, niche research, and automated market intelligence</td>
+                  <td><span class="status-dev">In Development</span></td>
+                </tr>
+                <tr>
+                  <td>Customer Profile Engine</td>
+                  <td>Customer identity, qualification, and lifecycle management</td>
+                  <td><span class="status-dev">In Development</span></td>
+                </tr>
+                <tr>
+                  <td>Trade &amp; Commerce Engine</td>
+                  <td>Deal management, logistics, invoicing, and third-party integrations</td>
+                  <td><span class="status-live">Live in Production</span></td>
+                </tr>
+                <tr>
+                  <td>Internal Operations Portal</td>
+                  <td>Internal interface for deal intake, invoice management, and operational oversight</td>
+                  <td><span class="status-dev">In Development</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE CAPABILITIES -->
+    <section class="section">
+      <div class="section-grid">
+        <div class="section-intro">
+          <div class="eyebrow">Live Capabilities</div>
+          <h2>What Is in Production Today</h2>
+          <p>The Trade &amp; Commerce Engine is fully deployed and running.</p>
+        </div>
+        <div class="prose-stack">
+          <div class="card-grid">
+            <article class="stat-card">
+              <h3>Deal Lifecycle Management</h3>
+              <p>Complete management of Tripartite Financing Agreements (TPAs) across 16 structured milestones, with automatic payment waterfall calculation at deal close.</p>
+            </article>
+            <article class="stat-card">
+              <h3>Shipment &amp; Invoice Processing</h3>
+              <p>End-to-end management of shipments and invoices with automated status tracking and cross-system sync.</p>
+            </article>
+            <article class="stat-card">
+              <h3>VHC Certification Engine</h3>
+              <p>Automated Verdance Heritage Certification classification — Green Channel, Mixed Review, or Standard — written back to shipment records in real time.</p>
+            </article>
+            <article class="stat-card">
+              <h3>Zoho CRM &amp; Books Integration</h3>
+              <p>Live, two-way connection between the Verdance Platform and Verdance's customer and accounting systems, with built-in safeguards against duplicate entries.</p>
+            </article>
+            <article class="stat-card">
+              <h3>Live Status Sync</h3>
+              <p>When a deal advances in the CRM, the corresponding shipment status updates automatically — no manual entry required.</p>
+            </article>
+            <article class="stat-card">
+              <h3>Security &amp; Monitoring</h3>
+              <p>Authenticated access controls on all platform functions, structured activity logging, and a live system health monitor for uptime tracking.</p>
+            </article>
+          </div>
+          <div class="panel">
+            <div class="mini-label">Production Metrics</div>
+            <table class="snapshot-table">
+              <tr><td>Automated quality checks</td><td>49 passing, 0 failures</td></tr>
+              <tr><td>Platform functions</td><td>15+ across deals, shipments, invoices, sync, certification, and access</td></tr>
+              <tr><td>Schema versions</td><td>7 stable, incremental releases</td></tr>
+              <tr><td>Active integrations</td><td>Zoho CRM, Zoho Books, Railway</td></tr>
+              <tr><td>Deployment</td><td>Live production environment</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRATEGIC POSITIONING -->
+    <section class="section">
+      <div class="section-grid">
+        <div class="section-intro">
+          <div class="eyebrow">Strategic Positioning</div>
+          <h2>Platform as Business Infrastructure</h2>
+          <p>Every design decision traces back to the business model.</p>
+        </div>
+        <div class="panel prose-stack">
+          <p>Every design decision in the platform was made with the business model in mind. Core business logic lives inside the Verdance Platform — not inside third-party tools like Zoho. Data structures and deal frameworks are supplier-agnostic and named generically, making the system portable across trade corridors without rebuilding.</p>
+          <p>The Mexico corridor is Verdance's flagship lane, but the infrastructure can support any corridor from day one. This positioning supports Verdance's shift away from margin-spread economics toward revenue from design, implementation, and facilitation. The platform is not only internal software — it is commercial infrastructure Verdance can put to work for clients and partners.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTO REVENUE ROLE -->
+    <section class="section" id="revenue">
+      <div class="section-grid">
+        <div class="section-intro">
+          <div class="eyebrow">CTO Revenue Role</div>
+          <h2>Three Paths to Commercial Value</h2>
+          <p>The CTO function is a direct revenue capability, not a support role.</p>
+        </div>
+        <div class="prose-stack">
+          <p style="color: var(--color-text-muted);">In Verdance's model — where the firm earns through design, implementation, and facilitation — the CTO function is a direct revenue capability with three concrete paths to commercial value.</p>
+          <div class="card-grid-2">
+            <article class="revenue-card">
+              <div class="revenue-number">01</div>
+              <h3>Infrastructure as a Service</h3>
+              <p>The deal management system — including the financing agreement framework, financial term modeling, milestone tracking, and payment calculation — is the backbone of Verdance's own trade operations. The same system can be deployed for trading partners who need this infrastructure but lack the capacity to build it. This is a billable, repeatable offer aligned directly with Verdance's Trade Systems and Infrastructure practice area.</p>
+            </article>
+            <article class="revenue-card">
+              <div class="revenue-number">02</div>
+              <h3>Platform Credibility for Clients</h3>
+              <p>Verdance's ability to demonstrate a live, deployed trade infrastructure system changes the nature of client conversations. The VHC certification engine, deal lifecycle management, and automated sync capabilities are concrete, auditable demonstrations of what Verdance builds and maintains. This is the difference between positioning as a consultancy and positioning as an implementation firm.</p>
+            </article>
+          </div>
+          <article class="revenue-card">
+            <div class="revenue-number">03</div>
+            <h3>Heritage &amp; Identity Diagnostic — Delivery Layer</h3>
+            <p>The Heritage &amp; Identity Diagnostic is Verdance's clearest near-term product offer. Ryan's role is to design and build its delivery layer — whether that takes the form of a client portal, a structured intake tool, a branded report generator, or a lightweight digital interface. The full stack includes web design, brand tooling, and production-grade front-end implementation, which positions Ryan to own both the infrastructure and the client-facing experience of this product.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="section" id="roadmap">
+      <div class="section-grid">
+        <div class="section-intro">
+          <div class="eyebrow">Roadmap</div>
+          <h2>What Comes Next</h2>
+          <p>Completing the pipeline and closing the gap between backend capability and operational usability.</p>
+        </div>
+        <div class="prose-stack">
+          <div class="panel prose-stack">
+            <div class="mini-label">Near Term</div>
+            <ul class="roadmap-list" role="list">
+              <li><div><strong>Customer Profile Engine</strong> <span>— completing the identity layer and enabling clean separation between customer and trade records</span></div></li>
+              <li><div><strong>Market Intelligence Engine</strong> <span>— activating the top-of-funnel lead discovery and qualification pipeline</span></div></li>
+              <li><div><strong>Internal Operations Portal</strong> <span>— making deal and invoice management accessible to the full founding team</span></div></li>
+              <li><div><strong>Trade &amp; Commerce Engine hardening</strong> <span>— event-driven status updates, additional deal field mapping, and milestone structure finalization</span></div></li>
+            </ul>
+          </div>
+          <div class="panel prose-stack">
+            <div class="mini-label">Medium Term</div>
+            <ul class="roadmap-list" role="list">
+              <li><div><strong>Multi-client &amp; multi-corridor scale</strong> <span>— fully separating customer record ownership between services</span></div></li>
+              <li><div><strong>Heritage &amp; Identity Diagnostic delivery layer</strong> <span>— defining and building the technical infrastructure for Verdance's primary product offer</span></div></li>
+              <li><div><strong>Deal lifecycle as an external offer</strong> <span>— evaluating the deal framework as a deployable product for trading partners</span></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Verdance Trade Solutions · Internal use only</p>
+    <p>Maintained by Ryan Landry, Founder &amp; CTO · June 2026</p>
+  </footer>
+
+  <!-- THEME TOGGLE SCRIPT -->
+  <script>
+    (function () {
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const root = document.documentElement;
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+      function render() {
+        root.setAttribute('data-theme', theme);
+        toggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+        toggle.innerHTML = theme === 'dark'
+          ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+          : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      }
+
+      render();
+      toggle.addEventListener('click', function () {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        render();
+      });
+    })();
+  </script>
+</body>
+</html>
